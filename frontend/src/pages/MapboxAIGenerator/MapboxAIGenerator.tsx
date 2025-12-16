@@ -14,6 +14,7 @@ const MapboxAIGenerator = () => {
   const [generatedImage, setGeneratedImage] = useState(null);
   const [mapboxLoaded, setMapboxLoaded] = useState(false);
   const [error, setError] = useState(null);
+  const [openPreview, setOpenPreview] = useState(false);
 
   // Load Mapbox GL JS
   useEffect(() => {
@@ -305,8 +306,16 @@ Style: Professional architectural visualization, hyperrealistic, high detail, na
         <div className="w-1/2 bg-gray-800 rounded-lg shadow-xl p-6 flex flex-col">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <Maximize2 className="w-5 h-5" />
               Result Image
+              {generatedImage && (
+                <button
+                  onClick={() => setOpenPreview(true)}
+                  className="text-white hover:text-blue-400 transition w-10 justify-items-center"
+                  title="Preview Image"
+                >
+                  <Maximize2 className="w-5 h-5" />
+                </button>
+              )}
             </h2>
             {generatedImage && (
               <button
@@ -355,6 +364,59 @@ Style: Professional architectural visualization, hyperrealistic, high detail, na
           </div>
         </div>
       </div>
+      {openPreview && generatedImage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          
+          {/* Close when clicking background */}
+          <div
+            className="absolute inset-0"
+            onClick={() => setOpenPreview(false)}
+          />
+
+          {/* Modal content */}
+          <div className="relative z-10 max-w-6xl w-full h-[90vh] bg-gray-900 rounded-xl shadow-2xl p-4 flex flex-col">
+            
+            {/* Header */}
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-white font-semibold text-lg">
+                Generated Image Preview
+              </h3>
+              <button
+                onClick={() => setOpenPreview(false)}
+                className="text-gray-300 hover:text-white text-xl"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Image */}
+            <div className="flex-1 flex items-center justify-center overflow-hidden rounded-lg bg-black">
+              <img
+                src={generatedImage}
+                alt="Large preview"
+                className="max-w-full max-h-full object-contain"
+              />
+            </div>
+
+            {/* Actions */}
+            <div className="mt-4 flex justify-end gap-3">
+              <button
+                onClick={downloadImage}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+              >
+                <Download className="w-4 h-4" />
+                Download
+              </button>
+              <button
+                onClick={() => setOpenPreview(false)}
+                className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
