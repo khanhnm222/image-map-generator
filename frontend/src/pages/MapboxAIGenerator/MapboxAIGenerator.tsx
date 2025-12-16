@@ -212,7 +212,7 @@ Style: Professional architectural visualization, hyperrealistic, high detail, na
             <Camera className="w-8 h-8 text-white" />
             <div>
               <h1 className="text-2xl font-bold text-white">AI Map Visualizer</h1>
-              <p className="text-blue-100 text-sm">Transform maps into realistic 3D images.</p>
+              <p className="text-blue-100 text-sm">Transform maps into realistic 3D images</p>
             </div>
           </div>
           <div className="flex items-center gap-4 text-white text-sm">
