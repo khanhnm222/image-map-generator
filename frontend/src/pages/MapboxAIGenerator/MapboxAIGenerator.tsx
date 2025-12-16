@@ -116,7 +116,7 @@ const MapboxAIGenerator = () => {
       // Capture map canvas
       const mapImage = captureMapCanvas();
       if (!mapImage) {
-        throw new Error('Không thể capture bản đồ');
+        throw new Error('Unable to capture the map');
       }
 
       // Prepare prompt
@@ -135,18 +135,18 @@ Key requirements:
 
 Style: Professional architectural visualization, hyperrealistic, high detail, natural lighting, 4K quality`;
 
-      // Call API (Demo - bạn cần implement backend thực tế)
+      // Call API
       const response = await fetch('http://localhost:3001/api/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          imageData: mapImage,     // ✅ Backend expects this
-          pitch: Number(pitch),       // ✅ Backend expects this
-          bearing: Number(bearing),   // ✅ Backend expects this
-          zoom: Number(zoom),         // ✅ Backend expects this
-          location: { lat, lng }      // ✅ Backend expects this
+          imageData: mapImage,
+          pitch: Number(pitch),
+          bearing: Number(bearing),
+          zoom: Number(zoom),
+          location: { lat, lng }
         })
       });
 
@@ -157,9 +157,6 @@ Style: Professional architectural visualization, hyperrealistic, high detail, na
       const data = await response.json();
 
       console.log('image data', data);
-      
-      // Demo: Sử dụng map image làm placeholder  
-      // Trong production, bạn sẽ nhận được generated image từ API
       setGeneratedImage(mapImage);
       
     } catch (err: any) {
@@ -209,13 +206,13 @@ Style: Professional architectural visualization, hyperrealistic, high detail, na
   return (
     <div className="w-screen h-screen bg-gray-900 flex flex-col">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 shadow-lg">
+      <div className="bg-linear-to-r from-blue-600 to-purple-600 p-4 shadow-lg">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Camera className="w-8 h-8 text-white" />
             <div>
               <h1 className="text-2xl font-bold text-white">AI Map Visualizer</h1>
-              <p className="text-blue-100 text-sm">Chuyển đổi bản đồ thành hình ảnh 3D chân thực</p>
+              <p className="text-blue-100 text-sm">Transform maps into realistic 3D images</p>
             </div>
           </div>
           <div className="flex items-center gap-4 text-white text-sm">
@@ -288,12 +285,12 @@ Style: Professional architectural visualization, hyperrealistic, high detail, na
           <button
             onClick={generateImage}
             disabled={loading || !mapboxLoaded}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-600 disabled:to-gray-600 text-white font-bold py-4 px-8 rounded-lg shadow-lg transition flex items-center justify-center gap-3 text-lg"
+            className="bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-600 disabled:to-gray-600 text-white font-bold py-4 px-8 rounded-lg shadow-lg transition flex items-center justify-center gap-3 text-lg"
           >
             {loading ? (
               <>
                 <Loader2 className="w-6 h-6 animate-spin" />
-                Đang tạo hình ảnh...
+                Creating an image...
               </>
             ) : (
               <>
@@ -309,7 +306,7 @@ Style: Professional architectural visualization, hyperrealistic, high detail, na
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
               <Maximize2 className="w-5 h-5" />
-              Kết quả AI
+              Result Image
             </h2>
             {generatedImage && (
               <button
@@ -317,7 +314,7 @@ Style: Professional architectural visualization, hyperrealistic, high detail, na
                 className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition"
               >
                 <Download className="w-4 h-4" />
-                Tải xuống
+                Download
               </button>
             )}
           </div>
@@ -328,8 +325,8 @@ Style: Professional architectural visualization, hyperrealistic, high detail, na
                 <p className="text-lg font-semibold mb-2">Lỗi:</p>
                 <p>{error}</p>
                 <p className="text-sm mt-4 text-gray-400">
-                  Lưu ý: Demo này cần backend API để kết nối với Gemini Vision.
-                  <br />Vui lòng xem hướng dẫn setup bên dưới.
+                  Note: This demo requires an additional API to connect with Gemini Vision.
+                  <br />Please see the setup instructions below.
                 </p>
               </div>
             ) : generatedImage ? (
@@ -341,20 +338,19 @@ Style: Professional architectural visualization, hyperrealistic, high detail, na
             ) : (
               <div className="text-gray-400 text-center p-8">
                 <Camera className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p className="text-lg">Chưa có hình ảnh</p>
-                <p className="text-sm mt-2">Điều chỉnh bản đồ và nhấn Generate</p>
+                <p className="text-lg">No images available </p>
+                <p className="text-sm mt-2">Adjust the map and press Generate</p>
               </div>
             )}
           </div>
 
           {/* Instructions */}
           <div className="mt-4 bg-gray-900 rounded-lg p-4 text-sm text-gray-300">
-            <h3 className="font-semibold text-white mb-2">📋 Hướng dẫn:</h3>
+            <h3 className="font-semibold text-white mb-2">📋 Instruction:</h3>
             <ul className="space-y-1">
-              <li>1. Di chuyển và zoom bản đồ đến vị trí mong muốn</li>
-              <li>2. Dùng các nút điều khiển để xoay camera</li>
-              <li>3. Nhấn "Generate" để tạo hình ảnh 3D</li>
-              <li>4. Token Mapbox: <span className="text-yellow-400">Cần thay thế trong code</span></li>
+              <li>1. Move and zoom the map to your desired location</li>
+              <li>2. Use the control buttons to rotate the camera</li>
+              <li>3. Press "Generate" to create a 3D image</li>
             </ul>
           </div>
         </div>
